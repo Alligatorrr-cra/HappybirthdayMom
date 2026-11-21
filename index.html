@@ -261,6 +261,25 @@ function unlock(a){
   const p = a.play();
   if(p && p.then) p.then(()=>{ a.pause(); a.currentTime = 0; a.muted = false; }).catch(()=>{ a.muted = false; });
 }
+// iPhone 上不能直接改音量，所以背景音乐走 Web Audio 的音量旋钮
+let actx = null, songGain = null;
+function setupSongGain(){
+  if(songGain || !song || song.failed) return;
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext;
+    actx = new AC();
+    const src = actx.createMediaElementSource(song);
+    songGain = actx.createGain(); songGain.gain.value = 1;
+    src.connect(songGain); songGain.connect(actx.destination);
+  }catch(e){ songGain = null; }
+}
+function songTo(v){
+  if(songGain && actx){
+    if(actx.state === 'suspended') actx.resume();
+    const g = songGain.gain, t = actx.currentTime;
+    g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(v, t + .6);
+  } else if(song && !song.failed) fadeTo(song, v);
+}
 function fadeTo(a, v){
   const from = a.volume, t0 = performance.now();
   (function step(t){ const k = Math.min(1, (t - t0) / 600); try{ a.volume = from + (v - from) * k; }catch(e){} if(k < 1) requestAnimationFrame(step); })(t0);
@@ -349,7 +368,7 @@ let started = false;
 me.addEventListener('click', async () => {
   if(started) return; started = true;
   unlock(blessing);
-  if(song && !song.failed){ song.loop = true; song.volume = 1; song.currentTime = 0; song.play().catch(() => {}); }
+  if(song && !song.failed){ setupSongGain(); if(actx) actx.resume(); song.loop = true; song.currentTime = 0; song.play().catch(() => {}); }
   hint.style.opacity = 0;
   me.classList.replace('sit', 'stand');                 // 站起来
   await wait(650);
@@ -542,7 +561,7 @@ function launch(ox, oy){
     if(!opened) return;
     timers.forEach(clearTimeout); timers = [];
     if(cardVoice && !cardVoice.failed){ cardVoice.pause(); }
-    if(song && !song.failed) fadeTo(song, 1);
+    songTo(1);
     if(bgm && !bgm.failed){ bgm.pause(); }
     card.classList.remove('reading');
     timers.push(setTimeout(() => card.classList.remove('slide', 'flapped'), 350));
@@ -555,7 +574,7 @@ function launch(ox, oy){
 
   card.addEventListener('click', () => {
     if(!ready || opened) return; opened = true;
-    unlock(cardVoice); unlock(bgm);
+    unlock(cardVoice); unlock(bgm); if(actx && actx.state === 'suspended') actx.resume();
     wig.classList.remove('on');
     kf.style.zIndex = 50; dim.classList.add('on');
     const sc = 1.15*S;
@@ -565,8 +584,8 @@ function launch(ox, oy){
     timers.push(setTimeout(() => card.classList.add('flapped', 'slide'), 1450));     // 信纸往上抽出来
     timers.push(setTimeout(() => card.classList.add('reading'), 2400));             // 信纸展开到前面
     timers.push(setTimeout(() => {
-      if(song && !song.failed) fadeTo(song, .12);
-      playOrWait(cardVoice, 0).then(() => { if(opened && song && !song.failed) fadeTo(song, 1); });
+      songTo(.12);
+      playOrWait(cardVoice, 0).then(() => { if(opened) songTo(1); });
       if(bgm && !bgm.failed){ bgm.volume = .35; bgm.loop = true; bgm.currentTime = 0; bgm.play().catch(()=>{}); }
     }, 2600));
   });
