@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>妈妈生日快乐</title>
+<style>
+:root{
+  --skin:#ffd9c4;
+  --me-top:#ffc9d3; --me-bottom:#ffd9c4;
+  --mom-top:#ee8f9f; --mom-leg:#ffd9c4;
+  --shoe:#5b423a;
+  --cardi:#d6c1a3;
+}
+@font-face{font-family:'WenKai';font-weight:300;font-display:swap;src:url('assets/font/wenkai-light.woff2') format('woff2')}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html,body{height:100%;overflow:hidden;background:#f1e4da;font-weight:300;font-family:'WenKai',-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+#stage{position:relative;margin:0 auto;width:100%;max-width:480px;height:100vh;height:100dvh;overflow:hidden;background:linear-gradient(#fff6ee 0%,#ffe6d8 100%)}
+@media (min-width:500px){
+  body{display:flex;align-items:center;justify-content:center;background:#e9dcd2}
+  #stage{width:min(430px,calc(96vh * 390 / 844));height:auto;aspect-ratio:390/844;border-radius:32px;box-shadow:0 20px 60px rgba(80,40,30,.25)}
+}
+#plush{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.plw{position:absolute;left:0;will-change:transform}
+.pl{display:block;width:100%;filter:contrast(.55) brightness(1.12) saturate(.75);transition:transform .25s ease;transform-origin:50% 100%}
+@keyframes hover{from{translate:0 0}to{translate:0 -14px}}
+#sprinkle{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.cf{position:absolute;top:-12px;border-radius:1px;opacity:.55}
+.sp{position:absolute;opacity:0;color:#e9c48a;font-size:9px;line-height:1;animation:twinkle 3.2s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:.7;transform:scale(1)}}
+#floor{position:absolute;left:0;right:0;bottom:0;height:13%;background:linear-gradient(rgba(120,70,70,.12),rgba(120,70,70,0) 40%),url('assets/fabric/floor-pink.jpg') center/cover;border-top:3px solid #e6c4c4}
+
+/* ---------- 小人 ---------- */
+.char{position:absolute;bottom:8%;width:120px;height:222px;margin-left:-60px;transform:scale(var(--s,1));transform-origin:50% 100%;transition:left 1.5s linear}
+#me{left:40%;z-index:21;cursor:pointer}
+#mom{left:125%;z-index:20}
+.flip{position:absolute;inset:0}
+#mom .flip{transform:scaleX(-1)}
+.pose{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .5s cubic-bezier(.3,1.35,.5,1)}
+.pose>div{position:absolute}
+.head{left:16px;top:0;width:88px;height:88px;z-index:6;transform-origin:50% 90%;transition:transform .5s}
+.head img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+#me .head img{transform:scaleX(-1)}
+#me .head{left:6px;top:-10px;width:108px;height:108px}
+.neck{left:53px;top:64px;width:15px;height:20px;border-radius:6px;background:var(--skin);z-index:2}
+#mom .head{left:16px;top:-4px;width:88px;height:88px}
+.collar{left:43px;top:78px;width:34px;height:12px;z-index:4}
+.collar::before,.collar::after{content:"";position:absolute;top:0;width:18px;height:11px;background:#fff;border-radius:0 0 60% 60%/0 0 100% 100%;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.cardi{left:28px;top:78px;width:64px;height:66px;z-index:4;clip-path:polygon(19% 0,81% 0,97% 100%,3% 100%);background:linear-gradient(transparent calc(100% - 6px),rgba(90,60,30,.18) 0),url('assets/fabric/cable-cream.jpg') 0 0/60px;-webkit-mask-image:linear-gradient(90deg,#000 0 39%,transparent 39% 61%,#000 61%);mask-image:linear-gradient(90deg,#000 0 39%,transparent 39% 61%,#000 61%)}
+.collar::before{left:0;transform:rotate(14deg)}
+.collar::after{right:0;transform:rotate(-14deg)}
+#mom .head img,#mom .head .ph-head{transform:scaleX(-1)}
+.ph-head{width:100%;height:100%;border-radius:50%;background:var(--skin);border:3px solid #f2c0a6;display:flex;align-items:center;justify-content:center;font-size:18px;color:#b07a62}
+.torso{left:32px;top:80px;width:56px;height:76px;border-radius:24px 24px 12px 12px;z-index:3}
+#me .torso{background:var(--me-top) url('assets/fabric/knit-grey.jpg') 0 0/70px;background-blend-mode:multiply;height:62px;border-radius:24px 24px 9px 9px;box-shadow:inset 0 -6px 0 rgba(60,75,95,.18)}
+.skirt{left:29px;top:134px;width:62px;height:30px;z-index:2;background:repeating-linear-gradient(90deg,#d9a35c 0 3px,transparent 3px 6px) 0 6px/100% 1px no-repeat,repeating-linear-gradient(90deg,#d9a35c 0 3px,transparent 3px 6px) 0 calc(100% - 4px)/100% 1px no-repeat,linear-gradient(rgba(10,20,40,.35) 0 4px,transparent 4px),url('assets/fabric/denim.jpg') 0 0/110px;clip-path:polygon(9% 0,91% 0,91% 0,100% 100%,0 100%);transition:clip-path .45s,width .45s}
+#me.sit .skirt{width:80px;height:28px;border-radius:0 0 4px 0;clip-path:polygon(9% 0,45% 0,100% 50%,100% 100%,0 100%)}
+#me.sit .leg-b{transform:rotate(-88deg)}
+#me.sit .leg-f{transform:rotate(-83deg)}
+#mom .torso{left:26px;width:68px;height:86px;background:url('assets/fabric/stripe-ink.jpg') 0 0/60px;clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
+.arm{top:84px;width:13px;height:56px;border-radius:7px;transform-origin:50% 6px;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.arm::after{content:"";position:absolute;left:-1px;bottom:-5px;width:15px;height:15px;border-radius:50%;background:var(--skin)}
+.arm-b{left:31px;z-index:1;filter:brightness(.92)}
+.arm-f{left:76px;z-index:5}
+#me .arm{background:var(--me-top) url('assets/fabric/knit-grey.jpg') 0 0/70px;background-blend-mode:multiply}
+#mom .arm{background:url('assets/fabric/cable-cream.jpg') 0 0/60px}
+.leg{top:148px;width:15px;height:62px;border-radius:7px;transform-origin:50% 6px;z-index:2;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.leg::after{content:"";position:absolute;left:-1px;bottom:-5px;width:24px;height:12px;border-radius:6px 12px 6px 6px;background:var(--shoe)}
+.leg-b{left:43px;filter:brightness(.9)}
+.leg-f{left:62px}
+#me .leg{background:linear-gradient(var(--me-bottom) 0 68%,#fff 68%)}
+#mom .leg{background:var(--mom-leg)}
+.held{position:absolute;left:-12px;top:44px;width:38px;height:32px;background:#fff;padding:2px;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .45s,opacity .2s}
+.held img,.held .ph{width:100%;height:100%;object-fit:cover;display:block}
+
+/* 姿势：坐着看照片 */
+.sit .pose{transform:translateY(56px)}
+.sit .leg-f{transform:rotate(-84deg)}
+.sit .leg-b{transform:rotate(-76deg)}
+.sit .arm-f{transform:rotate(-58deg)}
+.sit .arm-b{transform:rotate(-48deg)}
+.sit .held{transform:rotate(58deg)}
+.sit .head{transform:rotate(7deg)}
+/* 站着 */
+.stand .arm-f{transform:rotate(-7deg)}
+.stand .arm-b{transform:rotate(7deg)}
+.stand .held{transform:rotate(7deg)}
+/* 拥抱 */
+.hug .pose{transform:rotate(5deg);animation:sway 1.8s .55s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(5deg)}to{transform:rotate(1deg)}}
+.hug .arm-f{transform:rotate(-84deg)}
+.hug .arm-b{transform:rotate(-66deg)}
+.hug .held{opacity:0}
+.hug .head{transform:rotate(5deg)}
+/* 跑 */
+.run .pose{animation:bob .17s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0) rotate(7deg)}to{transform:translateY(-9px) rotate(7deg)}}
+.run .leg-f,.run .arm-b{animation:swA .34s ease-in-out infinite alternate}
+.run .leg-b,.run .arm-f{animation:swB .34s ease-in-out infinite alternate}
+@keyframes swA{from{transform:rotate(-38deg)}to{transform:rotate(32deg)}}
+@keyframes swB{from{transform:rotate(32deg)}to{transform:rotate(-38deg)}}
+
+.hint{left:60px;top:-50px;transform:translateX(-50%);background:#fff;color:#d06b7d;font-size:15px;padding:5px 12px;border-radius:14px;box-shadow:0 3px 8px rgba(0,0,0,.12);white-space:nowrap;animation:pulse 1.4s ease-in-out infinite;z-index:10;transition:opacity .3s}
+.hint::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-top-color:#fff;border-bottom:0}
+@keyframes pulse{50%{transform:translateX(-50%) translateY(-5px)}}
+
+/* ---------- 飞出来的东西 ---------- */
+.fly{position:absolute;width:0;height:0;z-index:10}
+.fly>.item{position:absolute;top:0}
+.photo{background:#fff;padding:5px 5px 16px;border-radius:3px;box-shadow:0 8px 20px rgba(80,40,30,.18)}
+.photo img,.photo .ph{display:block;width:100%;object-fit:cover}
+.photo .ph{aspect-ratio:4/3}
+.ph{background:linear-gradient(135deg,#f7c6cf,#c9dcf3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.framed{position:relative;filter:drop-shadow(0 6px 10px rgba(80,40,30,.22))}
+.framed .win{position:absolute;overflow:hidden;background:#fff}
+.framed .win img,.framed .win .ph{width:100%;height:100%;object-fit:contain;display:block}
+.framed>img.fr{position:relative;display:block;width:100%;height:auto;z-index:1;pointer-events:none}
+.floaty{animation:floaty 3.4s ease-in-out infinite alternate}
+@keyframes floaty{from{transform:translateY(-4px)}to{transform:translateY(4px)}}
+
+/* 蛋糕 */
+.cake-wrap{position:absolute;left:-60px;top:-65px;width:120px;height:130px;transform:scale(calc(var(--s,1) * 1.35))}
+.cake{position:relative;width:120px;height:130px}
+.plate{position:absolute;left:-8px;bottom:-4px;width:136px;height:30px;z-index:0;filter:drop-shadow(0 3px 4px rgba(0,0,0,.12))}
+.side::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(90,50,20,.28),rgba(255,255,255,.15) 35%,rgba(255,255,255,0) 60%,rgba(90,50,20,.28))}
+.tier{position:absolute;left:12px;bottom:10px;width:96px;height:76px;z-index:1}
+.side{position:absolute;left:0;right:0;top:11px;bottom:0;border-radius:0 0 50% 50%/0 0 10px 10px;overflow:hidden;background:url('assets/fabric/cake-layers2.jpg') 0 0/68px 65px repeat-x;animation:spinL 2.8s linear infinite}
+@keyframes spinL{to{background-position:-136px 0}}
+.drip{position:absolute;left:0;top:0;width:192px;height:30px;z-index:1;animation:dripSpin 1.98s linear infinite;filter:drop-shadow(0 1.5px 1px rgba(70,35,10,.3))}
+.drip svg{display:block}
+@keyframes dripSpin{to{transform:translateX(-96px)}}
+.lid{position:absolute;left:0;right:0;top:0;height:22px;border-radius:50%;background:radial-gradient(ellipse at 38% 30%,#f3c787 0%,#e4ab63 50%,#d39a52 90%)}
+.flame{position:absolute;width:9px;height:13px;background:radial-gradient(circle at 50% 70%,#fff6b0,#ffb43a 60%,#ff7a2a);border-radius:50%/60% 60% 40% 40%;transform-origin:50% 100%;animation:flick .25s ease-in-out infinite alternate}
+.tp{position:absolute;display:block;filter:drop-shadow(0 1px 1px rgba(80,40,20,.25))}
+@keyframes flick{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.9,1.12) rotate(3deg)}}
+
+/* 贺卡 */
+.wig{position:absolute}
+.wig.on{animation:wig 2.6s ease-in-out infinite}
+@keyframes wig{0%,78%,100%{transform:rotate(0)}83%{transform:rotate(-6deg)}88%{transform:rotate(6deg)}93%{transform:rotate(-3deg)}97%{transform:rotate(2deg)}}
+.card{position:absolute;left:-140px;top:-95px;width:280px;height:190px;perspective:1100px;transition:transform .8s cubic-bezier(.3,1.1,.4,1);cursor:pointer}
+.env-back{position:absolute;inset:0;z-index:1;border-radius:6px;background:url('assets/fabric/env-hearts.jpg') 0 0/130px;box-shadow:0 10px 28px rgba(80,40,30,.25)}
+.env-back::after{content:"";position:absolute;inset:0;border-radius:6px;background:rgba(120,80,60,.08)}
+.letter{position:absolute;left:16px;right:16px;bottom:10px;height:168px;z-index:3;border-radius:3px;background:url('assets/fabric/letter-paper.jpg') center/cover;box-shadow:0 2px 6px rgba(80,50,30,.18);padding:20px 22px;font-size:14px;line-height:1.8;color:#5b4033;white-space:pre-wrap;overflow:hidden;transition:transform .9s cubic-bezier(.3,.9,.4,1),height .7s ease}
+.pocket-wrap{position:absolute;inset:0;z-index:4;filter:drop-shadow(0 -1px 1.5px rgba(90,60,40,.22));pointer-events:none}
+.env-pocket{position:absolute;inset:0;border-radius:0 0 6px 6px;clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);background:url('assets/fabric/env-hearts.jpg') 30px 0/130px}
+.env-flap{position:absolute;left:0;right:0;top:0;height:64%;z-index:5;transform-origin:50% 0;transition:transform .8s ease-in-out;filter:drop-shadow(0 2px 2px rgba(90,60,40,.2))}
+.env-flap::before{content:"";position:absolute;inset:0;border-radius:6px 6px 0 0;clip-path:polygon(0 0,100% 0,100% 2%,56% 95%,53% 98.5%,50% 100%,47% 98.5%,44% 95%,0 2%);background:url('assets/fabric/env-hearts.jpg') 60px 0/130px}
+.env-label{position:absolute;left:0;right:0;bottom:14px;z-index:6;text-align:center;font-size:22px;color:#a0705e;letter-spacing:2px;transition:opacity .4s}
+.letter{opacity:0}
+.card.open .letter{opacity:1}
+.card.open .env-flap{transform:rotateX(180deg)}
+.card.flapped .env-flap{z-index:2}
+.card.open .env-label{opacity:0}
+.card.slide .letter{transform:translateY(-58%)}
+.card.reading .letter{z-index:7;height:500px;transform:translateY(48px);font-size:12.5px;line-height:1.65;padding:18px 18px;box-shadow:0 12px 30px rgba(80,50,30,.28);overflow:auto}
+
+.letter{scrollbar-width:thin;scrollbar-color:rgba(150,110,85,.28) transparent}
+.letter::-webkit-scrollbar{width:3px;background:transparent}
+.letter::-webkit-scrollbar-track{background:transparent}
+.letter::-webkit-scrollbar-thumb{background:rgba(150,110,85,.28);border-radius:3px}
+#dim{position:absolute;inset:0;background:rgba(60,30,25,.35);opacity:0;pointer-events:none;transition:opacity .6s;z-index:30}
+#dim.on{opacity:1;pointer-events:auto}
+#lb{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(40,25,20,.55);opacity:0;pointer-events:none;transition:opacity .35s}
+#lb.on{opacity:1;pointer-events:auto}
+#lb img{max-width:90%;max-height:82%;border:8px solid #fff;border-radius:4px;box-shadow:0 14px 40px rgba(0,0,0,.35);transform:scale(.85);transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+#lb.on img{transform:scale(1)}
+.framed{cursor:zoom-in}
+.fly.top{z-index:40}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="floor"></div>
+  <div id="plush"></div>
+  <div id="sprinkle"></div>
+
+  <div class="char sit" id="me"><div class="flip"><div class="pose">
+    <div class="hint">hi妈妈！戳戳我</div>
+    <div class="neck"></div>
+    <div class="collar"></div>
+    <div class="head"></div>
+    <div class="arm arm-b"></div>
+    <div class="leg leg-b"></div>
+    <div class="leg leg-f"></div>
+    <div class="skirt"></div>
+    <div class="torso"></div>
+    <div class="arm arm-f"><div class="held"></div></div>
+  </div></div></div>
+
+  <div class="char stand" id="mom"><div class="flip"><div class="pose">
+    <div class="neck"></div>
+    <div class="cardi"></div>
+    <div class="head"></div>
+    <div class="arm arm-b"></div>
+    <div class="leg leg-b"></div>
+    <div class="leg leg-f"></div>
+    <div class="torso"></div>
+    <div class="arm arm-f"></div>
+  </div></div></div>
+
+  <div id="dim"></div>
+  <div id="lb"><img alt=""></div>
+</div>
+
+<script>
+/* ========== 在这里换素材 ========== */
+const CONFIG = {
+  photos: ['photos/1.jpg','photos/2.jpg','photos/3.jpg','photos/4.jpg','photos/5.jpg','photos/6.jpg','photos/7.jpg','photos/8.jpg','photos/9.jpg','photos/10.jpg','photos/11.jpg','photos/12.jpg','photos/13.jpg','photos/14.jpg'],
+  meHead:  'assets/me.png',
+  momHead: 'assets/mom.png',
+  song: 'audio/song.mp3',           // 点我就开始放的生日歌
+  blessing: 'audio/blessing.mp3',   // 拥抱时的短祝福（没有这个文件就跳过）
+  cardVoice: 'audio/card.mp3',      // 读贺卡
+  bgm: null,                        // 想加背景音乐就写 'audio/bgm.mp3'
+  // 背景里淡淡飘着的长颈鹿和小羊玩偶
+  plush: ['assets/plush/p1.png','assets/plush/p2.png','assets/plush/p3.png','assets/plush/p4.png','assets/plush/p5.png','assets/plush/p6.png'],
+  cardFront: 'To 妈妈',
+  cardText: "To：全世界最好最完美的妈妈Karen\n\n祝妈妈生日快乐！\n好希望好希望你的生日我可以在你身边！无论你多少岁在我的眼里你永远38岁，每天看着你根本就没感觉你在变老哈哈哈。\n我真的真的很希望也相信30年后你的身体状态会一点点也没变，祝你身体一直健康，工作上一切都无比顺利，同时工作压力也在小一点！\n但是相信你可以把身体照顾的很好！！\n等80年后我们一定还要一起出去晚上散步聊天，一起做难看的小饼干，一起看电影！\n\n生日快乐妈妈，祝你一切都顺利，身体永远健康，我真的好爱你好爱你！\n\nBest,\n全世界最爱你的女儿Cheryl"
+};
+/* ================================== */
+const FRAMES = [{"src": "assets/frames/f1.png", "ar": 1.5749, "x": 8.86, "y": 9.52, "w": 82.7, "h": 70.85}, {"src": "assets/frames/f2.png", "ar": 1.5652, "x": 8.83, "y": 9.38, "w": 82.47, "h": 71.09}, {"src": "assets/frames/f3.png", "ar": 1.5707, "x": 6.79, "y": 5.1, "w": 85.46, "h": 73.27}, {"src": "assets/frames/f4.png", "ar": 1.2119, "x": 2.84, "y": 3.82, "w": 94.48, "h": 77.71}, {"src": "assets/frames/f5.png", "ar": 1.2216, "x": 5.24, "y": 5.27, "w": 89.22, "h": 74.39}, {"src": "assets/frames/f6.png", "ar": 1.0201, "x": 4.76, "y": 7.13, "w": 89.97, "h": 71.87}, {"src": "assets/frames/f7.png", "ar": 1.2053, "x": 7.15, "y": 6.19, "w": 85.23, "h": 72.39}, {"src": "assets/frames/f8.png", "ar": 1.1948, "x": 12.84, "y": 12.32, "w": 79.08, "h": 67.63}];
+
+const stage = document.getElementById('stage');
+const me = document.getElementById('me'), mom = document.getElementById('mom');
+const hint = me.querySelector('.hint'), held = me.querySelector('.held');
+const dim = document.getElementById('dim');
+const lb = document.getElementById('lb'), lbImg = lb.querySelector('img');
+lb.addEventListener('click', () => lb.classList.remove('on'));
+let S = 1;
+function fit(){ const r = stage.getBoundingClientRect(); S = Math.min(r.width/390, r.height/780); stage.style.setProperty('--s', S); }
+fit(); addEventListener('resize', fit);
+
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rand = (a,b) => a + Math.random()*(b-a);
+const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+function makeImg(src, label, cls){
+  const img = new Image(); img.draggable = false; img.alt = '';
+  img.onerror = () => { const d = document.createElement('div'); d.className = cls; d.textContent = label; img.replaceWith(d); };
+  img.src = src; return img;
+}
+me.querySelector('.head').appendChild(makeImg(CONFIG.meHead, '我', 'ph-head'));
+mom.querySelector('.head').appendChild(makeImg(CONFIG.momHead, '妈妈', 'ph-head'));
+held.appendChild(makeImg(CONFIG.photos[0], '', 'ph'));
+// 先读出每张照片的横竖比例，用来挑最合适的边框，保证不裁掉人
+const photoAR = {};
+CONFIG.photos.forEach(src => { const im = new Image(); im.onload = () => photoAR[src] = im.naturalWidth / im.naturalHeight; im.src = src; });
+
+function mkAudio(src){
+  if(!src) return null;
+  const a = new Audio(src); a.preload = 'auto'; a.playsInline = true; a.failed = false;
+  a.addEventListener('error', () => a.failed = true);
+  return a;
+}
+const song = mkAudio(CONFIG.song), blessing = mkAudio(CONFIG.blessing), cardVoice = mkAudio(CONFIG.cardVoice), bgm = mkAudio(CONFIG.bgm);
+// 手机必须在点击时“解锁”声音，之后才能延迟播放
+function unlock(a){
+  if(!a || a.failed) return;
+  a.muted = true;
+  const p = a.play();
+  if(p && p.then) p.then(()=>{ a.pause(); a.currentTime = 0; a.muted = false; }).catch(()=>{ a.muted = false; });
+}
+function fadeTo(a, v){
+  const from = a.volume, t0 = performance.now();
+  (function step(t){ const k = Math.min(1, (t - t0) / 600); try{ a.volume = from + (v - from) * k; }catch(e){} if(k < 1) requestAnimationFrame(step); })(t0);
+}
+function playOrWait(a, fallbackMs){
+  return new Promise(res => {
+    let done = false; const fin = () => { if(!done){ done = true; res(); } };
+    if(!a || a.failed){ setTimeout(fin, fallbackMs); return; }
+    a.currentTime = 0; a.muted = false;
+    a.onended = fin; a.addEventListener('error', () => setTimeout(fin, fallbackMs), {once:true});
+    const p = a.play(); if(p && p.catch) p.catch(() => setTimeout(fin, fallbackMs));
+  });
+}
+
+/* ---------- 地上飘着跑来跑去的玩偶 ---------- */
+(() => {
+  const layer = document.getElementById('plush');
+  CONFIG.plush.forEach((src, k) => {
+    const wrap = document.createElement('div'); wrap.className = 'plw';
+    const size = rand(58, 80);
+    wrap.style.width = `calc(${size}px * var(--s,1))`;
+    wrap.style.bottom = rand(10, 21) + '%';
+    wrap.style.zIndex = Math.round(rand(1, 9));
+    const im = new Image(); im.src = src; im.className = 'pl'; im.alt = '';
+    im.style.animationDelay = (-rand(0, 1.6)) + 's';
+    wrap.appendChild(im); layer.appendChild(wrap);
+    let x = rand(0, stage.clientWidth - size*S), face = 1;
+    wrap.style.transform = `translate(${x}px,0)`;
+    // 蹦跶：一下一下小跳，偶尔来一个远远的大跳
+    function hop(nx, big){
+      const hgt = big ? rand(45, 70) : rand(12, 24), T = big ? rand(700, 900) : rand(330, 430);
+      const mx = (x + nx) / 2;
+      return wrap.animate([
+        {transform:`translate(${x}px,0) scale(1.06,.9)`},
+        {transform:`translate(${(x*3+nx)/4}px,${-hgt*.75}px) scale(.95,1.06)`, offset:.25},
+        {transform:`translate(${mx}px,${-hgt}px) scale(1,1)`, offset:.5},
+        {transform:`translate(${(x+nx*3)/4}px,${-hgt*.75}px) scale(.97,1.04)`, offset:.75},
+        {transform:`translate(${nx}px,0) scale(1.08,.88)`, offset:.93},
+        {transform:`translate(${nx}px,0) scale(1,1)`}
+      ], {duration:T, easing:'linear'});
+    }
+    function wander(){
+      const W = stage.clientWidth, w = size*S;
+      const big = Math.random() < .15;
+      let dir = Math.random() < .5 ? -1 : 1;
+      const steps = big ? 1 : Math.floor(rand(2, 6));
+      let i = 0;
+      (function next(){
+        if(i++ >= steps){ setTimeout(wander, rand(600, 2600)); return; }
+        let nx = x + dir * (big ? rand(110, 190) : rand(18, 42));
+        if(nx < 0 || nx > W - w){ dir = -dir; nx = Math.min(W - w, Math.max(0, x + dir * (big ? rand(110,190) : rand(18,42)))); }
+        face = nx < x ? -1 : 1; im.style.transform = `scaleX(${face})`;
+        const a = hop(nx, big);
+        a.onfinish = () => { x = nx; wrap.style.transform = `translate(${x}px,0)`; setTimeout(next, rand(60, 220)); };
+      })();
+    }
+    setTimeout(wander, rand(0, 2000));
+  });
+})();
+
+/* ---------- 一丢丢小彩带和小星星 ---------- */
+(() => {
+  const layer = document.getElementById('sprinkle');
+  const colors = ['#f6c1cc','#f3d9a4','#bcd3ea','#cfe3c8','#e8cde8'];
+  for(let i = 0; i < 9; i++){
+    const c = document.createElement('div'); c.className = 'cf';
+    const w = rand(3, 5), hh = rand(6, 9);
+    c.style.cssText = `left:${rand(3,97)}%;width:${w}px;height:${hh}px;background:${colors[i % colors.length]}`;
+    layer.appendChild(c);
+    const sway = rand(-30, 30), spin = rand(180, 540) * (Math.random() < .5 ? -1 : 1);
+    c.animate([
+      {transform:'translate(0,0) rotate(0deg)'},
+      {transform:`translate(${sway}px,50vh) rotate(${spin/2}deg)`, offset:.5},
+      {transform:`translate(${-sway/2}px,105vh) rotate(${spin}deg)`}
+    ], {duration:rand(11000, 17000), iterations:Infinity, delay:-rand(0, 15000), easing:'linear'});
+  }
+  for(let i = 0; i < 10; i++){
+    const s = document.createElement('div'); s.className = 'sp'; s.textContent = Math.random() < .5 ? '✦' : '✧';
+    s.style.cssText = `left:${rand(3,95)}%;top:${rand(2,80)}%;font-size:${rand(7,11)}px;animation-delay:${-rand(0,3.2)}s;animation-duration:${rand(2.6,4.2)}s;color:${['#e9c48a','#f0b9c4','#c9d8ea'][i%3]}`;
+    layer.appendChild(s);
+  }
+})();
+
+/* ---------- 流程 ---------- */
+let started = false;
+me.addEventListener('click', async () => {
+  if(started) return; started = true;
+  unlock(blessing);
+  if(song && !song.failed){ song.loop = true; song.volume = 1; song.currentTime = 0; song.play().catch(() => {}); }
+  hint.style.opacity = 0;
+  me.classList.replace('sit', 'stand');                 // 站起来
+  await wait(650);
+  mom.classList.add('run'); mom.style.left = '59%';     // 妈妈跑进来
+  await wait(1500);
+  mom.classList.remove('run');
+  me.style.transition = 'left .5s ease'; me.style.left = '43%';
+  await wait(150);
+  me.classList.replace('stand', 'hug'); mom.classList.replace('stand', 'hug');  // 拥抱
+  await wait(400);
+  await playOrWait(blessing, 3500);                      // 抱一会儿（有短祝福就放短祝福）
+  await wait(300);
+  me.classList.replace('hug', 'stand'); mom.classList.replace('hug', 'stand');
+  mom.style.transition = 'left .5s ease';
+  me.style.left = '40%'; mom.style.left = '62%';
+  await wait(550);
+  fling();
+});
+
+function fling(){
+  const arm = me.querySelector('.arm-f'), dur = 900;
+  arm.animate([
+    {transform:'rotate(-7deg)'},
+    {transform:'rotate(40deg)', offset:.3},
+    {transform:'rotate(-165deg)', offset:.62},
+    {transform:'rotate(-160deg)', offset:.8},
+    {transform:'rotate(-7deg)'}
+  ], {duration:dur, easing:'ease-in-out'});
+  setTimeout(() => {
+    const r = held.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    held.style.opacity = 0;
+    launch(r.left + r.width/2 - sr.left, r.top + r.height/2 - sr.top);
+  }, dur * .6);
+}
+
+function flyIn(fly, item, ox, oy, x, y, rot, growDelay, startScale){
+  const dx = ox - x, dy = oy - y, lift = -rand(60, 140), T = rand(700, 900);
+  fly.animate([
+    {transform:`translate(${dx}px,${dy}px)`},
+    {transform:`translate(${dx*.35}px,${dy*.35 + lift}px)`, offset:.55},
+    {transform:'translate(0,0)'}
+  ], {duration:T, easing:'cubic-bezier(.25,.6,.35,1)'});
+  const from = `translateY(-50%) scale(${startScale}) rotate(${rot*3}deg)`;
+  const to   = `translateY(-50%) scale(1) rotate(${rot}deg)`;
+  item.style.transform = from;
+  return new Promise(res => setTimeout(() => {
+    const g = item.animate([{transform:from},{transform:to}], {duration:650, easing:'cubic-bezier(.34,1.56,.64,1)', fill:'forwards'});
+    g.onfinish = () => { item.style.transform = to; g.cancel(); res(); };
+  }, growDelay));
+}
+
+function makeFly(x, y, z){
+  const fly = document.createElement('div'); fly.className = 'fly';
+  fly.style.left = x + 'px'; fly.style.top = y + 'px'; fly.style.zIndex = z;
+  const item = document.createElement('div'); item.className = 'item';
+  fly.appendChild(item); stage.appendChild(fly);
+  return [fly, item];
+}
+
+function launch(ox, oy){
+  const W = stage.clientWidth, H = stage.clientHeight, n = CONFIG.photos.length;
+  // 陆续变大的时间
+  const delays = []; let t = 480;
+  shuffle([...Array(n).keys()]).forEach(i => { delays[i] = t; t += rand(90, 180); });
+  const zs = shuffle([...Array(n).keys()]);
+  const used = FRAMES.map(() => 0);
+  function pickFrame(ar){
+    const sc = FRAMES.map(f => Math.abs(Math.log(ar / (f.w / (f.h * f.ar)))));
+    const m = Math.min(...sc);
+    const c = FRAMES.map((f,k) => k).filter(k => sc[k] <= m + .12);
+    c.sort((a,b) => used[a] - used[b] || Math.random() - .5);
+    used[c[0]]++; return FRAMES[c[0]];
+  }
+
+  // 摆放：尽量互相不挡，也避开蛋糕和贺卡
+  const x0 = .02*W, x1 = .98*W, y0 = .02*H, y1 = .57*H;
+  const obst = [
+    {x:.78*W, y:.52*H, w:185*S, h:190*S},   // 蛋糕和字母饼干
+    {x:.50*W, y:.59*H, w:120*S, h:82*S}     // 贺卡
+  ];
+  const ov = (a,b) => Math.max(0, Math.min(a.x+a.w/2, b.x+b.w/2) - Math.max(a.x-a.w/2, b.x-b.w/2)) *
+                      Math.max(0, Math.min(a.y+a.h/2, b.y+b.h/2) - Math.max(a.y-a.h/2, b.y-b.h/2));
+  let avail = (x1-x0)*(y1-y0);
+  const region = {x:(x0+x1)/2, y:(y0+y1)/2, w:x1-x0, h:y1-y0};
+  obst.forEach(o => avail -= ov(o, region));
+  const A = .84 * avail / n;
+  const frs = CONFIG.photos.map(src => pickFrame(photoAR[src] || .75));
+  const boxes = frs.map(f => { let w = Math.sqrt(A / f.ar), hh = w * f.ar;
+    const cap = (y1-y0) * .42; if(hh > cap){ hh = cap; w = hh / f.ar; } return {w, h:hh}; });
+  const placed = [];
+  function bestSpot(i, others){
+    const b = boxes[i]; let best = null, bestCost = Infinity;
+    for(let k = 0; k < 700; k++){
+      const c = {x: rand(x0 + b.w/2, x1 - b.w/2), y: rand(y0 + b.h/2, y1 - b.h/2), w:b.w, h:b.h, i};
+      let cost = 0;
+      others.forEach(p => cost += ov(c, p));
+      obst.forEach(o => cost += 3 * ov(c, o));
+      if(cost < bestCost){ bestCost = cost; best = c; }
+    }
+    return best;
+  }
+  shuffle([...Array(n).keys()]).forEach(i => placed.push(bestSpot(i, placed)));
+  // 再挪两轮，把挡得多的地方松开
+  for(let round = 0; round < 3; round++){
+    for(let j = 0; j < placed.length; j++){
+      placed[j] = bestSpot(placed[j].i, placed.filter((_, q) => q !== j));
+    }
+  }
+
+  placed.forEach(pos => {
+    const i = pos.i, src = CONFIG.photos[i], fr = frs[i], w = pos.w, x = pos.x, y = pos.y;
+    const [fly, item] = makeFly(x, y, 10 + zs[i]);
+    item.style.width = w + 'px'; item.style.left = (-w/2) + 'px';
+    const fl = document.createElement('div'); fl.className = 'floaty'; fl.style.animationDelay = (-rand(0,3)) + 's';
+    const ph = document.createElement('div'); ph.className = 'framed';
+    const win = document.createElement('div'); win.className = 'win';
+    win.style.cssText = `left:${fr.x}%;top:${fr.y}%;width:${fr.w}%;height:${fr.h}%`;
+    win.appendChild(makeImg(src, '照片' + (i+1), 'ph'));
+    ph.addEventListener('click', () => { lbImg.src = src; lb.classList.add('on'); });
+    const fi = new Image(); fi.className = 'fr'; fi.src = fr.src; fi.alt = '';
+    ph.appendChild(win); ph.appendChild(fi); fl.appendChild(ph); item.appendChild(fl);
+    flyIn(fly, item, ox, oy, x, y, rand(-5,5), delays[i], .15);
+  });
+
+  // 蛋糕
+  const [cf, ci] = makeFly(.77*W, .50*H, 24);
+  ci.innerHTML = `<div class="cake-wrap"><div class="cake">
+    <img class="plate" src="assets/cake/plate.png" alt="">
+    <div class="tier"><div class="side"><div class="drip"></div></div><div class="lid"></div></div>
+    <div class="toppings"></div>
+    <img class="tp" src="assets/cake/candle.png" style="left:56.5px;top:12px;width:7px;height:32px;z-index:40;filter:none">
+    <div class="flame" style="left:55.5px;top:0;z-index:41"></div>
+    <img class="tp" src="assets/cake/bear.png" style="left:33px;top:29px;width:19px;transform:rotate(-12deg);z-index:30">
+    <img class="tp" src="assets/cake/heart.png" style="left:69px;top:32px;width:18px;transform:rotate(14deg);z-index:30">
+    <img class="tp" src="assets/cake/cream.png" style="left:46px;top:31px;width:28px;z-index:42">
+    <img class="tp" src="assets/cake/hb.png" style="left:38px;top:100px;width:104px;transform:rotate(-6deg);z-index:60">
+  </div></div>`;
+  // 往下流的焦糖酱：上面浅，往下越来越深
+  (function(){
+    let d = 'M0 0 H96 V5 ', x = 96;
+    const drips = []; let px = 2;
+    while(px < 90){ const w = rand(6, 10), len = rand(6, 19); drips.push([px, w, len]); px += w + rand(2, 7); }
+    // 从右往左画回来，形成连续的一条
+    d = 'M0 0 H96 V5 ';
+    for(let k = drips.length - 1; k >= 0; k--){
+      const [dx, w, len] = drips[k], r = w/2;
+      d += `L${dx+w} 5 L${dx+w} ${5+len-r} A${r} ${r} 0 0 1 ${dx} ${5+len-r} L${dx} 5 `;
+    }
+    d += 'L0 5 Z';
+    const svg = `<svg width="192" height="30" viewBox="0 0 192 30"><defs><linearGradient id="dg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8b26a"/><stop offset=".35" stop-color="#cf8f48"/><stop offset=".75" stop-color="#a3622c"/><stop offset="1" stop-color="#7a431d"/></linearGradient></defs>
+      <path d="${d}" fill="url(#dg)"/><path d="${d}" fill="url(#dg)" transform="translate(96 0)"/></svg>`;
+    ci.querySelector('.drip').innerHTML = svg;
+  })();
+
+  // 星星和坚果随机撒在顶上
+  const tops = ci.querySelector('.cake');
+  const CAKE_BITS = {'star-y':'assets/cake/star-y.png','star-w1':'assets/cake/star-w1.png','star-w2':'assets/cake/star-w2.png','cashew1':'assets/cake/cashew1.png','cashew2':'assets/cake/cashew2.png','cashew3':'assets/cake/cashew3.png','cashew4':'assets/cake/cashew4.png','nut1':'assets/cake/nut1.png','nut2':'assets/cake/nut2.png','nut3':'assets/cake/nut3.png'};
+  const pool = shuffle(['star-y','star-w1','star-w2','star-y','star-w1','cashew1','cashew2','cashew3','cashew4','nut1','nut2','nut3']).slice(0, 9);
+  pool.forEach(n => {
+    let x, y;
+    do { const a = rand(0, Math.PI*2), r = Math.sqrt(Math.random());
+         x = 60 + Math.cos(a)*r*38; y = 55 + Math.sin(a)*r*8; } while(Math.abs(x-60) < 15 && y < 58);
+    const w = n.startsWith('star') ? rand(10, 13) : rand(7, 9);
+    const im = new Image(); im.src = CAKE_BITS[n]; im.className = 'tp';
+    im.style.cssText = `left:${x-w/2}px;top:${y-w*.8}px;width:${w}px;transform:rotate(${rand(-60,60)}deg);z-index:${y > 55 ? 50 : 20}`;
+    tops.appendChild(im);
+  });
+  flyIn(cf, ci, ox, oy, .77*W, .50*H, 12, 650, .3);
+
+  // 贺卡
+  const cx = .50*W, cy = .59*H;
+  const [kf, ki] = makeFly(cx, cy, 25);
+  ki.innerHTML = `<div class="wig"><div class="card">
+    <div class="env-back"></div>
+    <div class="letter"></div>
+    <div class="pocket-wrap"><div class="env-pocket"></div></div>
+    <div class="env-flap"></div>
+    <div class="env-label"></div>
+  </div></div>`;
+  const wig = ki.querySelector('.wig'), card = ki.querySelector('.card');
+  card.querySelector('.letter').textContent = CONFIG.cardText;
+  card.querySelector('.env-label').textContent = CONFIG.cardFront;
+  card.style.transform = `scale(${.4*S})`;
+  let ready = false, opened = false;
+  flyIn(kf, ki, ox, oy, cx, cy, 0, 560, .3).then(() => { ready = true; wig.classList.add('on'); });
+
+  let timers = [];
+  dim.addEventListener('click', () => {
+    if(!opened) return;
+    timers.forEach(clearTimeout); timers = [];
+    if(cardVoice && !cardVoice.failed){ cardVoice.pause(); }
+    if(song && !song.failed) fadeTo(song, 1);
+    if(bgm && !bgm.failed){ bgm.pause(); }
+    card.classList.remove('reading');
+    timers.push(setTimeout(() => card.classList.remove('slide', 'flapped'), 350));
+    timers.push(setTimeout(() => card.classList.remove('open'), 1100));
+    timers.push(setTimeout(() => {
+      card.style.transform = `scale(${.4*S})`; dim.classList.remove('on');
+      timers.push(setTimeout(() => { kf.style.zIndex = 25; wig.classList.add('on'); opened = false; }, 800));
+    }, 1800));
+  });
+
+  card.addEventListener('click', () => {
+    if(!ready || opened) return; opened = true;
+    unlock(cardVoice); unlock(bgm);
+    wig.classList.remove('on');
+    kf.style.zIndex = 50; dim.classList.add('on');
+    const sc = 1.15*S;
+    card.style.transform = `translate(${W/2 - cx}px,${.66*H - cy}px) scale(${sc})`;
+    timers = [];
+    timers.push(setTimeout(() => card.classList.add('open'), 700));                 // 打开信封盖
+    timers.push(setTimeout(() => card.classList.add('flapped', 'slide'), 1450));     // 信纸往上抽出来
+    timers.push(setTimeout(() => card.classList.add('reading'), 2400));             // 信纸展开到前面
+    timers.push(setTimeout(() => {
+      if(song && !song.failed) fadeTo(song, .12);
+      playOrWait(cardVoice, 0).then(() => { if(opened && song && !song.failed) fadeTo(song, 1); });
+      if(bgm && !bgm.failed){ bgm.volume = .35; bgm.loop = true; bgm.currentTime = 0; bgm.play().catch(()=>{}); }
+    }, 2600));
+  });
+}
+</script>
+</body>
+</html>
